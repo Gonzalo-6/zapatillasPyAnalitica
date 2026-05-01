@@ -1,4 +1,7 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 
 # =========================
 # 1. CARGA DE DATOS
@@ -96,7 +99,7 @@ sales_payment = df.groupby("payment_method")["units_sold"].sum().sort_values(asc
 print("\nVentas por método de pago:")
 print(sales_payment)
 
-import matplotlib.pyplot as plt
+
 
 # =========================
 # 6. VISUALIZACIÓN
@@ -132,7 +135,7 @@ plt.tight_layout()
 
 plt.show()"""
 
-import matplotlib.pyplot as plt
+
 
 # preparar datos
 brand_revenue = df.groupby("brand")["revenue_usd"].sum().sort_values(ascending=False)
@@ -150,7 +153,7 @@ fig, axes = plt.subplots(
     gridspec_kw={"height_ratios": [1.2, 1, 1.2]}
 )
 
-# -------------------------
+# -------------------------     
 # 1. Ingresos por marca
 # -------------------------
 brand_revenue.plot(kind="bar", ax=axes[0, 0])
@@ -158,6 +161,7 @@ axes[0, 0].set_title("Ingresos por Marca")
 axes[0, 0].set_xlabel("Marca")
 axes[0, 0].set_ylabel("Ingresos (USD)")
 axes[0, 0].tick_params(axis="x", rotation=45)
+axes[0, 0].set_title("Ingresos por Marca", fontsize=14)
 
 # -------------------------
 # 2. Ventas por género
@@ -211,6 +215,34 @@ axes[2, 1].set_ylabel("Unidades Vendidas")
 axes[2, 1].tick_params(axis="x", rotation=45)
 
 # layout final
+plt.tight_layout()
+plt.show()
+plt.subplots_adjust(hspace=0.6, wspace=0.25)
+
+# =========================
+# 7. HEATMAP PAÍS x CATEGORÍA
+# =========================
+
+pivot_country_category = df.pivot_table(
+    values="revenue_usd",
+    index="country",
+    columns="category",
+    aggfunc="sum"
+)
+
+plt.figure(figsize=(10, 6))
+
+sns.heatmap(
+    pivot_country_category,
+    annot=True,
+    fmt=".0f",
+    cmap="Blues"
+)
+
+plt.title("Ingresos por País y Categoría")
+plt.xlabel("Categoría")
+plt.ylabel("País")
+
 plt.tight_layout()
 plt.show()
 
