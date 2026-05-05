@@ -246,4 +246,29 @@ plt.ylabel("País")
 plt.tight_layout()
 plt.show()
 
+
+# =========================
+# 8. INSIGHTS CLAVE
+# =========================
+
+print("\n===== INSIGHTS CLAVE =====")
+
+top_brand = df.groupby("brand")["revenue_usd"].sum().idxmax()
+top_country = df.groupby("country")["revenue_usd"].sum().idxmax()
+top_gender = df.groupby("gender")["units_sold"].sum().idxmax()
+top_channel = df.groupby("sales_channel")["units_sold"].sum().idxmax()
+top_payment = df.groupby("payment_method")["units_sold"].sum().idxmax()
+top_month = df.groupby("month")["revenue_usd"].sum().reindex(month_order).idxmax()
+top_category = df.groupby("category")["units_sold"].sum().idxmax()
+
+print(f"- La marca con mayor facturación es {top_brand}.")
+print(f"- El país con más ingresos es {top_country}.")
+print(f"- El segmento con más ventas es {top_gender}.")
+print(f"- El canal dominante es {top_channel}.")
+print(f"- El método de pago más usado es {top_payment}.")
+print(f"- El mes con más ingresos es {top_month}.")
+print(f"- La categoría más vendida es {top_category}.")
+
+
 print("\nFIN DEL SCRIPT")
+
