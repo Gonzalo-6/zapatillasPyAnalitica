@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import os
 
 # =========================
 # 1. CARGA DE DATOS
@@ -218,6 +218,7 @@ axes[2, 1].tick_params(axis="x", rotation=45)
 plt.tight_layout()
 plt.show()
 plt.subplots_adjust(hspace=0.6, wspace=0.25)
+plt.close()
 
 # =========================
 # 7. HEATMAP PAÍS x CATEGORÍA
@@ -269,6 +270,53 @@ print(f"- El método de pago más usado es {top_payment}.")
 print(f"- El mes con más ingresos es {top_month}.")
 print(f"- La categoría más vendida es {top_category}.")
 
+# =========================
+# 9. EXPORTACIÓN
+# =========================
+
+os.makedirs("outputs", exist_ok=True)
+
+try:
+
+# ---- 1. Exportar KPIs ----
+    kpis_summary = pd.DataFrame({
+        "metric": [
+            "Total Revenue",
+            "Total Units Sold",
+            "Average Ticket",
+            "Average Price"
+        ],
+        "value": [
+            df["revenue_usd"].sum(),
+            df["units_sold"].sum(),
+            df["revenue_usd"].mean(),
+            df["final_price_usd"].mean()
+     ]
+    })
+
+    kpis_summary.to_csv("outputs/kpis_summary.csv", index=False)
+    print("✓ kpis_summary.csv exportado")
+
+# ---- 2. Exportar heatmap data ----
+    pivot_country_category.to_csv("outputs/country_category_heatmap.csv")
+    print("✓ country_category_heatmap.csv exportado")
+
+# ---- 3. Exportar insights ----
+    with open("outputs/insights.txt", "w", encoding="utf-8") as f:
+        f.write("===== INSIGHTS CLAVE =====\n")
+        f.write(f"La marca con mayor facturación es {top_brand}.\n")
+        f.write(f"El país con más ingresos es {top_country}.\n")
+        f.write(f"El segmento con más ventas es {top_gender}.\n")
+        f.write(f"El canal dominante es {top_channel}.\n")
+        f.write(f"El método de pago más usado es {top_payment}.\n")
+        f.write(f"El mes con más ingresos es {top_month}.\n")
+        f.write(f"La categoría más vendida es {top_category}.\n")
+
+    print("✓ insights.txt exportado")
+    print("\nArchivos exportados en /outputs")
+
+except Exception as e:
+    print(f"\nERROR EN EXPORTACIÓN: {e}")
 
 print("\nFIN DEL SCRIPT")
 
